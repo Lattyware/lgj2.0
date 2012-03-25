@@ -54,7 +54,7 @@ public class Island : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+		boat.tag = this.gameObject.tag;
 		vikingsInc = 10;
 		sheepInc = 10;
 		
@@ -158,12 +158,12 @@ public class Island : MonoBehaviour {
 		}
 	}
 	
-	void launchBoat(GameObject tIsland, int rotation){
-		if(launchedBoats.Count<dockNum){
+	public void launchBoat(GameObject tIsland, int rotation){
+		if(launchedBoats.Capacity<dockNum){
 			if(sheepNum-100>=0) {
 				Vector3 pos = transform.position;
 				GameObject newBoat = (GameObject)GameObject.Instantiate(boat, pos, Quaternion.identity);
-				newBoat.tag="PlayerBoat";
+				newBoat.tag=this.gameObject.tag;
 				// position the boat at the correct angle off the shore of the island
 				newBoat.transform.Rotate(new Vector3(0, rotation, 0));
 				newBoat.transform.Translate(Vector3.forward * ISLAND_DISTANCE);
