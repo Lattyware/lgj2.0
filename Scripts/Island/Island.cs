@@ -19,6 +19,10 @@ public class Island : MonoBehaviour {
 	public int vikingsNum;
 	public int sheepNum;
 	
+	public int farmPrice = 20;
+	public int townPrice = 20;
+	public int dockPrice = 20;
+	
 	public float incTime;
 	public float incTimeVal;
 	
@@ -45,10 +49,8 @@ public class Island : MonoBehaviour {
 	List<GameObject> sheepFarms = new List<GameObject>();
 	public Vector3[] farmGrid = new Vector3[5];
 	public Vector3[] townGrid = new Vector3[5];
-	
-	int currentPos = 0;
-	
-	List<Boat> launchedBoats = new List<Boat>();
+		
+	public ArrayList launchedBoats = new ArrayList();
 	
 	// Use this for initialization
 	void Start () {
@@ -56,8 +58,8 @@ public class Island : MonoBehaviour {
 		vikingsInc = 10;
 		sheepInc = 10;
 		
-		vikingsNum = 0;
-		sheepNum = 0;
+		vikingsNum = 20;
+		sheepNum = 20;
 		
 		vikingsPer = 10;
 		
@@ -67,6 +69,7 @@ public class Island : MonoBehaviour {
 		townNum = 0;
 		farmNum = 0;
 		dockNum = 0;
+
 		
 		maxThings = 5;
 		
@@ -95,6 +98,11 @@ public class Island : MonoBehaviour {
 		townGrid[2] = new Vector3(-12,0,0);
 		townGrid[3] = new Vector3(-12,0,2);
 		townGrid[4] = new Vector3(-12,0,4);
+		
+		addFarm();
+		sheepNum+=farmPrice;
+		addTown();
+		sheepNum+=farmPrice;
 	}
 	
 	// Update is called once per frame
@@ -106,9 +114,6 @@ public class Island : MonoBehaviour {
 			
 			vikingsNum += (int) Mathf.Floor((vikingsPer/100)*vikingsInc)*townNum;
 			sheepNum += (int) Mathf.Floor (((100-vikingsPer)/100)*sheepInc)*farmNum;
-			
-			Debug.Log("Vikings: " + vikingsNum);
-			Debug.Log("Sheep: " + sheepNum);
 			
 		}
 		
@@ -154,13 +159,19 @@ public class Island : MonoBehaviour {
 	}
 	
 	void launchBoat(GameObject tIsland, int rotation){
-		Vector3 pos = transform.position;
-		GameObject newBoat = (GameObject)GameObject.Instantiate(boat, pos, Quaternion.identity);
-		newBoat.tag="PlayerBoat";
-		// position the boat at the correct angle off the shore of the island
-		newBoat.transform.Rotate(new Vector3(0, rotation, 0));
-		newBoat.transform.Translate(Vector3.forward * ISLAND_DISTANCE);
-		newBoat.GetComponent<Boat>().InitializeVals(10, 10, this, tIsland);
+		if(launchedBoats.Count<dockNum){
+			if(sheepNum-100>=0) {
+				Vector3 pos = transform.position;
+				GameObject newBoat = (GameObject)GameObject.Instantiate(boat, pos, Quaternion.identity);
+				newBoat.tag="PlayerBoat";
+				// position the boat at the correct angle off the shore of the island
+				newBoat.transform.Rotate(new Vector3(0, rotation, 0));
+				newBoat.transform.Translate(Vector3.forward * ISLAND_DISTANCE);
+				newBoat.GetComponent<Boat>().InitializeVals(10, 10, this, tIsland);
+				launchedBoats.Add(newBoat.gameObject);
+				sheepNum-=100;
+			}
+		}
 	}
 	
 	public void targetIsland(GameObject tIsland){
@@ -170,11 +181,13 @@ public class Island : MonoBehaviour {
 	public void addTown() {
 		
 		if(sumThings()+1<=maxThings) {
-			townNum++;
-			GameObject tempObject = (GameObject)Instantiate(town,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(townGrid[townNum - 1]);
-			towns.Add(tempObject);
-				
+			if(sheepNum-townPrice>=0) {
+				sheepNum-=townPrice;
+				townNum++;
+				GameObject tempObject = (GameObject)Instantiate(town,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
+				tempObject.transform.Translate(townGrid[townNum - 1]);
+				towns.Add(tempObject);
+			}
 		}
 		
 	}
@@ -182,22 +195,27 @@ public class Island : MonoBehaviour {
 	public void addFarm() {
 		
 		if(sumThings()+1<=maxThings) {
-			farmNum++;
-			GameObject tempObject = (GameObject)Instantiate(sheepFarm,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(farmGrid[(farmNum - 1)]);
-			sheepFarms.Add(tempObject);
+			if(sheepNum-farmPrice>=0) {
+				sheepNum-=farmPrice;
+				farmNum++;
+				GameObject tempObject = (GameObject)Instantiate(sheepFarm,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
+				tempObject.transform.Translate(farmGrid[(farmNum - 1)]);
+				sheepFarms.Add(tempObject);
+			}
 		}		
 	}
 	
 	public void addDock() {
 		
 		if(sumThings()+1<=maxThings) {
-			
-			dockNum++;
-			GameObject tempObject = (GameObject)Instantiate(dock,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(dockPos[dockNum - 1]);
-			tempObject.transform.Rotate(dockRot[dockNum - 1]);
-			docks.Add(tempObject);
+			if(sheepNum-dockPrice>=0) {
+				sheepNum-=dockPrice;
+				dockNum++;
+				GameObject tempObject = (GameObject)Instantiate(dock,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
+				tempObject.transform.Translate(dockPos[dockNum - 1]);
+				tempObject.transform.Rotate(dockRot[dockNum - 1]);
+				docks.Add(tempObject);
+			}
 		}
 		
 	}

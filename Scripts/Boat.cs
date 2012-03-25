@@ -9,9 +9,11 @@ public class Boat : MonoBehaviour {
 	GameObject sourceIsland;
 	GameObject targettedIsland;
 	
+	
+	
 	public int maxCap = 20;
 	
-	float rotAngle;
+	public float rotAngle;
 	
 	// Use this for initialization
 	void Start () {
@@ -127,29 +129,25 @@ public class Boat : MonoBehaviour {
 		GameObject colObj = col.gameObject;
 		
 		if(colObj.gameObject.tag.Equals("EnemyBoat")) {
-			
-			Debug.Log("Is Boat");
-			
+						
 			Boat boat = colObj.GetComponent<Boat>();
 			
 			if(!isWinner(boat)) {
 				
-				Debug.Log("We lost");
-
-				DestroyObject(this);
+				
+				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+				DestroyObject(this.gameObject);
 				
 			} else {
-				
-				Debug.Log("We won");
-				
-				DestroyObject(colObj);
+				if(sourceIsland!=null) {				
+					sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat.gameObject);
+				}
+				DestroyObject(colObj.gameObject);
 				
 			}
 			
 		} else if(colObj.gameObject.tag.Equals("EnemyIsland")) {
-			
-			Debug.Log ("Is Island");
-			
+						
 			Island island = colObj.GetComponent<Island>();
 			
 			if(sackIsland(island)) {
@@ -159,7 +157,17 @@ public class Boat : MonoBehaviour {
 				targettedIsland = sourceIsland.gameObject;
 				sourceIsland = old;
 				
-			} 
+			} else {
+				
+				if(this.sourceIsland!=null) {
+					
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					
+				}
+				
+				DestroyObject(this.gameObject);
+				
+			}
 			
 		} else if(colObj.gameObject.tag.Equals("PlayerIsland") && colObj.gameObject!=sourceIsland) {
 			
@@ -168,6 +176,7 @@ public class Boat : MonoBehaviour {
 			island.vikingsNum+=numVikings;
 			island.sheepNum+=numSheep;
 			
+			sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
 			DestroyObject(this.gameObject);
 			
 		}
@@ -201,8 +210,9 @@ public class Boat : MonoBehaviour {
 		
 		if(numVikings<=island.vikingsNum) {
 			
-			numVikings=0;
 			island.removeVikings(numVikings);
+			numVikings=0;
+
 			
 			return false;
 			
