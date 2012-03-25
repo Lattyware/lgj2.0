@@ -158,7 +158,8 @@ public class Island : MonoBehaviour {
 		}
 	}
 	
-	void launchBoat(GameObject tIsland, int rotation){
+	public void launchBoat(GameObject tIsland, int rotation){
+		Debug.Log("Launched" + launchedBoats.Count + " DockNum: " + dockNum);
 		if(launchedBoats.Count<dockNum){
 			if(sheepNum-100>=0) {
 				Vector3 pos = transform.position;
