@@ -134,14 +134,15 @@ public class Boat : MonoBehaviour {
 			
 			if(!isWinner(boat)) {
 				
-				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
-				DestroyObject(this);
+				
+				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+				DestroyObject(this.gameObject);
 				
 			} else {
-				if(boat.sourceIsland!=null) {				
-					boat.sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat);
+				if(sourceIsland!=null) {				
+					sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat.gameObject);
 				}
-				DestroyObject(colObj);
+				DestroyObject(colObj.gameObject);
 				
 			}
 			
@@ -156,7 +157,17 @@ public class Boat : MonoBehaviour {
 				targettedIsland = sourceIsland.gameObject;
 				sourceIsland = old;
 				
-			} 
+			} else {
+				
+				if(this.sourceIsland!=null) {
+					
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					
+				}
+				
+				DestroyObject(this.gameObject);
+				
+			}
 			
 		} else if(colObj.gameObject.tag.Equals("PlayerIsland") && colObj.gameObject!=sourceIsland) {
 			
@@ -165,7 +176,7 @@ public class Boat : MonoBehaviour {
 			island.vikingsNum+=numVikings;
 			island.sheepNum+=numSheep;
 			
-			sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
+			sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
 			DestroyObject(this.gameObject);
 			
 		}
@@ -199,8 +210,9 @@ public class Boat : MonoBehaviour {
 		
 		if(numVikings<=island.vikingsNum) {
 			
-			numVikings=0;
 			island.removeVikings(numVikings);
+			numVikings=0;
+
 			
 			return false;
 			

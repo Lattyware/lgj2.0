@@ -159,7 +159,7 @@ public class Island : MonoBehaviour {
 	}
 	
 	void launchBoat(GameObject tIsland, int rotation){
-		if(launchedBoats.Capacity<dockNum){
+		if(launchedBoats.Count<dockNum){
 			if(sheepNum-100>=0) {
 				Vector3 pos = transform.position;
 				GameObject newBoat = (GameObject)GameObject.Instantiate(boat, pos, Quaternion.identity);
