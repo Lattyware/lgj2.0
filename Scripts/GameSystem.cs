@@ -5,8 +5,8 @@ using System;
 
 public class GameSystem : MonoBehaviour {
 	
-	List<GameObject> islandsObjects = new List<GameObject>();
-	List<Island> islandScript = new List<Island>();
+	static List<GameObject> islandsObjects = new List<GameObject>();
+	static List<Island> islandScript = new List<Island>();
 	List<Island> selectedIslandScripts = new List<Island>();
 	bool islandSelected = false;
 	float vikingsPer = 0;
@@ -108,5 +108,17 @@ public class GameSystem : MonoBehaviour {
 			
 			
 		}
+	}
+	
+	public static void addIsland() {
+		
+		GameObject[] tempObjects = GameObject.FindGameObjectsWithTag("PlayerIsland");
+		foreach (GameObject obj in tempObjects) {
+			islandsObjects.Add(obj);
+		}
+		foreach(GameObject temp in islandsObjects){
+			islandScript.Add(temp.GetComponent<Island>());
+		}
+		
 	}
 }

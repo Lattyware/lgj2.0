@@ -128,45 +128,125 @@ public class Boat : MonoBehaviour {
 
 		GameObject colObj = col.gameObject;
 		
-		if(colObj.gameObject.tag.Equals("EnemyBoat")) {
-						
-			Boat boat = colObj.GetComponent<Boat>();
-			
-			if(!isWinner(boat)) {
+		if(this.gameObject.tag.Equals("PlayerBoat")){
+		
+			if(colObj.gameObject.tag.Equals("EnemyBoat")) {
+							
+				Boat boat = colObj.GetComponent<Boat>();
 				
-				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
-				DestroyObject(this);
-				
-			} else {
-				if(boat.sourceIsland!=null) {				
-					boat.sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat);
+				if(!isWinner(boat)) {
+					
+					
+					sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					DestroyObject(this.gameObject);
+					
+				} else {
+					if(sourceIsland!=null) {				
+						sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat.gameObject);
+					}
+					DestroyObject(colObj.gameObject);
+					
 				}
-				DestroyObject(colObj);
+				
+			} else if(colObj.gameObject.tag.Equals("EnemyIsland")) {
+							
+				Island island = colObj.GetComponent<Island>();
+				
+				if(sackIsland(island)) {
+					
+					island.tag="PlayerIsland";
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					GameSystem.addIsland();
+					GameObject old = targettedIsland.gameObject;
+					targettedIsland = sourceIsland.gameObject;
+					sourceIsland = old;
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Add(this.gameObject);
+					
+					
+					
+				} else {
+					
+					if(this.sourceIsland!=null) {
+						
+						this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+						
+					}
+					
+					DestroyObject(this.gameObject);
+					
+				}
+				
+			} else if(colObj.gameObject.tag.Equals("PlayerIsland") && colObj.gameObject!=sourceIsland) {
+				
+				Island island = colObj.GetComponent<Island>();
+				
+				island.vikingsNum+=numVikings;
+				island.sheepNum+=numSheep;
+				
+				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+				DestroyObject(this.gameObject);
 				
 			}
 			
-		} else if(colObj.gameObject.tag.Equals("EnemyIsland")) {
+		} else {
+							
+			if(colObj.gameObject.tag.Equals("PlayerBoat")) {
+							
+				Boat boat = colObj.GetComponent<Boat>();
+				
+				if(!isWinner(boat)) {
+					
+					
+					sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					DestroyObject(this.gameObject);
+					
+				} else {
+					if(sourceIsland!=null) {				
+						sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat.gameObject);
+					}
+					DestroyObject(colObj.gameObject);
+					
+				}
+				
+			} else if(colObj.gameObject.tag.Equals("PlayerIsland")) {
+							
+				Island island = colObj.GetComponent<Island>();
+				
+				if(sackIsland(island)) {
+					
+					island.tag="EnemyIsland";
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+					GameSystem.addIsland();
+					GameObject old = targettedIsland.gameObject;
+					targettedIsland = sourceIsland.gameObject;
+					sourceIsland = old;
+					this.sourceIsland.GetComponent<Island>().launchedBoats.Add(this.gameObject);
+					
+					
+					
+				} else {
+					
+					if(this.sourceIsland!=null) {
 						
-			Island island = colObj.GetComponent<Island>();
-			
-			if(sackIsland(island)) {
+						this.sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+						
+					}
+					
+					DestroyObject(this.gameObject);
+					
+				}
 				
-				island.tag="PlayerIsland";
-				GameObject old = targettedIsland.gameObject;
-				targettedIsland = sourceIsland.gameObject;
-				sourceIsland = old;
+			} else if(colObj.gameObject.tag.Equals("EnemyIsland") && colObj.gameObject!=sourceIsland) {
 				
-			} 
-			
-		} else if(colObj.gameObject.tag.Equals("PlayerIsland") && colObj.gameObject!=sourceIsland) {
-			
-			Island island = colObj.GetComponent<Island>();
-			
-			island.vikingsNum+=numVikings;
-			island.sheepNum+=numSheep;
-			
-			sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
-			DestroyObject(this.gameObject);
+				Island island = colObj.GetComponent<Island>();
+				
+				island.vikingsNum+=numVikings;
+				island.sheepNum+=numSheep;
+				
+				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this.gameObject);
+				DestroyObject(this.gameObject);
+				
+			}
 			
 		}
 		
@@ -199,8 +279,9 @@ public class Boat : MonoBehaviour {
 		
 		if(numVikings<=island.vikingsNum) {
 			
-			numVikings=0;
 			island.removeVikings(numVikings);
+			numVikings=0;
+
 			
 			return false;
 			
