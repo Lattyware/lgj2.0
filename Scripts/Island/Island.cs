@@ -54,7 +54,7 @@ public class Island : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		boat.tag = this.gameObject.tag;
+		
 		vikingsInc = 10;
 		sheepInc = 10;
 		
@@ -158,12 +158,13 @@ public class Island : MonoBehaviour {
 		}
 	}
 	
-	public void launchBoat(GameObject tIsland, int rotation){
-		if(launchedBoats.Capacity<dockNum){
+	public void launchBoat(GameObject tIsland, int rotation, string tag){
+		Debug.Log("Launched" + launchedBoats.Count + " DockNum: " + dockNum);
+		if(launchedBoats.Count<dockNum){
 			if(sheepNum-100>=0) {
 				Vector3 pos = transform.position;
 				GameObject newBoat = (GameObject)GameObject.Instantiate(boat, pos, Quaternion.identity);
-				newBoat.tag=this.gameObject.tag;
+				newBoat.tag=tag;
 				// position the boat at the correct angle off the shore of the island
 				newBoat.transform.Rotate(new Vector3(0, rotation, 0));
 				newBoat.transform.Translate(Vector3.forward * ISLAND_DISTANCE);
@@ -174,8 +175,8 @@ public class Island : MonoBehaviour {
 		}
 	}
 	
-	public void targetIsland(GameObject tIsland){
-		launchBoat(tIsland, 0);
+	public void targetIsland(GameObject tIsland, string tag){
+		launchBoat(tIsland, 0, tag);
 	}
 	
 	public void addTown() {
@@ -222,7 +223,7 @@ public class Island : MonoBehaviour {
 	
 	public void removeTown() {
 		
-		if(sumThings()-1>=0) {
+		if(sumThings()-1>=0 && towns.Count>0) {
 			DestroyObject(towns.ToArray()[townNum - 1]);
 			towns.RemoveAt(townNum - 1);
 			townNum--;
@@ -233,7 +234,7 @@ public class Island : MonoBehaviour {
 	
 	public void removeFarm() {
 		
-		if(sumThings()-1>=0) {
+		if(sumThings()-1>=0 && sheepFarms.Count>0) {
 			DestroyObject(sheepFarms.ToArray()[farmNum - 1]);
 			sheepFarms.RemoveAt(farmNum - 1);
 			farmNum--;
@@ -244,7 +245,7 @@ public class Island : MonoBehaviour {
 	
 	public void removeDock() {
 		
-		if(sumThings()-1>=0) {
+		if(sumThings()-1>=0 && docks.Count>0) {
 			
 			DestroyObject(docks.ToArray()[dockNum - 1]);
 			docks.RemoveAt(dockNum - 1);

@@ -72,7 +72,7 @@ public class AIScript : MonoBehaviour {
 								tempIsland.addFarm();
 							}
 						}
-						tempIsland.launchBoat(targetIsland,10);
+						tempIsland.launchBoat(targetIsland,10,"EnemyBoat");
 					}else{
 						int randomNumber = (int)(Random.value*5);
 						if(randomNumber == 0){

@@ -7,9 +7,9 @@ public class GameSystem : MonoBehaviour {
 	
 	static List<GameObject> islandsObjects = new List<GameObject>();
 	static List<Island> islandScript = new List<Island>();
-	List<Island> selectedIslandScripts = new List<Island>();
+	public List<Island> selectedIslandScripts = new List<Island>();
 	bool islandSelected = false;
-	float vikingsPer = 0;
+	public float vikingsPer = 0;
 	bool[] selectedIslands;
 	
 	// Use this for initialization
@@ -25,12 +25,16 @@ public class GameSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		islandSelected = false;
-		foreach(Island temp in islandScript){
-			if(temp.isSelected){
-				temp.vikingsPer = this.vikingsPer;
-				islandSelected = true;
-			}
+		
+		GameSystem.getValues();
+		
+		if(selectedIslandScripts.Count==1) {
+			
+			selectedIslandScripts[0].vikingsPer = vikingsPer;
+			islandSelected = true;
+			
+		} else {
+			islandSelected = false;
 		}
 	
 	}
@@ -110,7 +114,7 @@ public class GameSystem : MonoBehaviour {
 		}
 	}
 	
-	public static void addIsland() {
+	public static	 void getValues() {
 		
 		GameObject[] tempObjects = GameObject.FindGameObjectsWithTag("PlayerIsland");
 		foreach (GameObject obj in tempObjects) {
@@ -119,6 +123,7 @@ public class GameSystem : MonoBehaviour {
 		foreach(GameObject temp in islandsObjects){
 			islandScript.Add(temp.GetComponent<Island>());
 		}
+		
 		
 	}
 }

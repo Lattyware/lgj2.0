@@ -27,6 +27,11 @@ public class SelectIsland : MonoBehaviour {
 					}else{
 						gSystem.removeSelectedIsland(hit.collider.GetComponent<Island>());
 					}
+					if(gSystem.selectedIslandScripts.Count==1) {
+						
+						gSystem.vikingsPer = gSystem.selectedIslandScripts[0].vikingsPer;
+						
+					}
 				}
 				
 				if(hit.collider.gameObject.tag.Equals("EnemyIsland")){
@@ -37,7 +42,7 @@ public class SelectIsland : MonoBehaviour {
 						targettedIsland.GetComponent<Island>().flashTargetted();
 						
 						foreach(Island island in islands){
-							island.GetComponent<Island>().targetIsland(targettedIsland);
+							island.GetComponent<Island>().targetIsland(targettedIsland,"PlayerBoat");
 						}
 					}
 				}
