@@ -22,7 +22,7 @@ public class IslandGen {
 				if (x<1 | y<1 | x>segments-1 | y>segments-1) {
 					initial[x, y] = 0;
 				} else {
-					initial[x, y] = Random.value*2;
+					initial[x, y] = Random.value*3;
 				}
 			}
 		}
@@ -66,6 +66,13 @@ public class IslandGen {
 				cy = 0;
 				cx += 2;
 			}
+			for (int x=0; x<current_size; x++) {
+				for (int y=0; y<current_size; y++) {
+					if (x<1 | y<1 | x>=current_size-1 | y>=current_size-1) {
+						current[x, y] = 0;
+					}
+				}
+			}
 			error *= Mathf.Pow (2, -jaggedness);
 			old_size = current_size;
 			old = current;
@@ -75,10 +82,18 @@ public class IslandGen {
 		for (int x=0; x < size-1; x++) {
 			for (int y=0; y < size-1; y++) {
 				float val = old[x, y];
-				if (val > 0.5f) {
-					final[x*size+y] = Color.green/val*0.7f;
-				} else if (val > 0.3f) {
+				if (val > 2f) {
+					final[x*size+y] = new Color(0.1f, 0.4f, 0.1f, 1f);
+				} else if (val > 0.97f) {
+					val = val/2f;
+					float rel = ((1-val)+0.95f);
+					final[x*size+y] = new Color(rel/4.5f, rel/2f, rel/5.5f, 1f);
+				} else if (val > 0.7f) {
+					final[x*size+y] = new Color(val/1.5f, val/2f, val/4f, 1f);
+				} else if (val > 0.5f) {
 					final[x*size+y] = Color.yellow;
+				} else if (val > 0.4f) {
+					final[x*size+y] = new Color(1f, 0.9f, 0.3f, 0.5f);	
 				} else {
 					final[x*size+y] = Color.clear;
 				}

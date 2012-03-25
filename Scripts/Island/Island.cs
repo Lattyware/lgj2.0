@@ -70,7 +70,7 @@ public class Island : MonoBehaviour {
 		
 		maxThings = 5;
 		
-		Texture2D texture = new IslandGen(128, 32, 1.5f).texture;
+		Texture2D texture = new IslandGen(1024, 256, 1.5f).texture;
 		this.renderer.material.mainTexture = texture;
 		texture.Apply();
 	
