@@ -122,7 +122,7 @@ public class Boat : MonoBehaviour {
 		
 	}
 	
-    void OnTriggerEnter(Collider col) {
+     void OnTriggerEnter(Collider col) {
 
 		GameObject colObj = col.gameObject;
 		
@@ -159,7 +159,16 @@ public class Boat : MonoBehaviour {
 				targettedIsland = sourceIsland.gameObject;
 				sourceIsland = old;
 				
-			}
+			} 
+			
+		} else if(colObj.gameObject.tag.Equals("PlayerIsland") && colObj.gameObject!=sourceIsland) {
+			
+			Island island = colObj.GetComponent<Island>();
+			
+			island.vikingsNum+=numVikings;
+			island.sheepNum+=numSheep;
+			
+			DestroyObject(this.gameObject);
 			
 		}
 		
