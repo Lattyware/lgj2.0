@@ -9,9 +9,11 @@ public class Boat : MonoBehaviour {
 	GameObject sourceIsland;
 	GameObject targettedIsland;
 	
+	
+	
 	public int maxCap = 20;
 	
-	float rotAngle;
+	public float rotAngle;
 	
 	// Use this for initialization
 	void Start () {
@@ -127,29 +129,24 @@ public class Boat : MonoBehaviour {
 		GameObject colObj = col.gameObject;
 		
 		if(colObj.gameObject.tag.Equals("EnemyBoat")) {
-			
-			Debug.Log("Is Boat");
-			
+						
 			Boat boat = colObj.GetComponent<Boat>();
 			
 			if(!isWinner(boat)) {
 				
-				Debug.Log("We lost");
-
+				sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
 				DestroyObject(this);
 				
 			} else {
-				
-				Debug.Log("We won");
-				
+				if(boat.sourceIsland!=null) {				
+					boat.sourceIsland.GetComponent<Island>().launchedBoats.Remove(boat);
+				}
 				DestroyObject(colObj);
 				
 			}
 			
 		} else if(colObj.gameObject.tag.Equals("EnemyIsland")) {
-			
-			Debug.Log ("Is Island");
-			
+						
 			Island island = colObj.GetComponent<Island>();
 			
 			if(sackIsland(island)) {
@@ -168,6 +165,7 @@ public class Boat : MonoBehaviour {
 			island.vikingsNum+=numVikings;
 			island.sheepNum+=numSheep;
 			
+			sourceIsland.GetComponent<Island>().launchedBoats.Remove(this);
 			DestroyObject(this.gameObject);
 			
 		}
