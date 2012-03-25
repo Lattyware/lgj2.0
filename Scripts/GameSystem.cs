@@ -15,8 +15,8 @@ public class GameSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject[] tempObjects = GameObject.FindGameObjectsWithTag("PlayerIsland");
-		foreach (GameObject obj in tempObjects) {
-			islandsObjects.Add(obj);
+		for(int i = 0;i<tempObjects.Length;i++){
+			islandsObjects.Add(tempObjects[i]);
 		}
 		foreach(GameObject temp in islandsObjects){
 			islandScript.Add(temp.GetComponent<Island>());
@@ -32,7 +32,7 @@ public class GameSystem : MonoBehaviour {
 				islandSelected = true;
 			}
 		}
-	
+		
 	}
 	
 	public List<Island> getSelectedIslands(){
@@ -88,23 +88,7 @@ public class GameSystem : MonoBehaviour {
 					}
 				}
 			}
-			if(GUI.Button(new Rect(15,143,30,30), "-")) {
-				foreach(Island temp in islandScript){
-					if(temp.isSelected){
-						temp.removeDock();
-						islandSelected = true;
-					}
-				}
-			}
-			GUI.Label(new Rect(50,143,100,30),"Dock");
-			if(GUI.Button(new Rect(85,143,30,30), "+")) {
-				foreach(Island temp in islandScript){
-					if(temp.isSelected){
-						temp.addDock();
-						islandSelected = true;
-					}
-				}
-			}
+			
 			
 			
 		}

@@ -8,7 +8,7 @@ public class Island : MonoBehaviour {
 	public Color32 selectedColour;
 	public Color32 orginalColour;
 	public Color32 targettedColour;
-	public GameObject boat;	
+	public GameObject boat;
 	
 	public float vikingsInc;
 	public float sheepInc;
@@ -35,20 +35,8 @@ public class Island : MonoBehaviour {
 	bool isTargetted = false;
 	bool isFlashing = false;
 	
-	public GameObject dock;
-	public GameObject town;
-	public GameObject sheepFarm;
-	public Vector3[] dockPos = new Vector3[5];
-	public Vector3[] dockRot = new Vector3[5]; 
-	List<GameObject> docks = new List<GameObject>();
-	List<GameObject> towns = new List<GameObject>();
-	List<GameObject> sheepFarms = new List<GameObject>();
-	public Vector3[] farmGrid = new Vector3[5];
-	public Vector3[] townGrid = new Vector3[5];
-	
-	int currentPos = 0;
-	
 	List<Boat> launchedBoats = new List<Boat>();
+	
 	
 	// Use this for initialization
 	void Start () {
@@ -65,7 +53,7 @@ public class Island : MonoBehaviour {
 		incTimeVal = 20;
 		
 		townNum = 0;
-		farmNum = 0;
+		farmNum = 3;
 		dockNum = 0;
 		
 		maxThings = 5;
@@ -74,27 +62,6 @@ public class Island : MonoBehaviour {
 		this.renderer.material.mainTexture = texture;
 		texture.Apply();
 	
-		
-		dockPos[0] = (new Vector3(this.transform.localScale.x * 4,0,0));
-		dockPos[1] = (new Vector3(-this.transform.localScale.x * 5,0,0));
-		dockPos[2] = (new Vector3(0,0,-this.transform.localScale.x  * 4));
-		dockPos[3] = (new Vector3(0,0,this.transform.localScale.x  * 4));
-		dockPos[4] = (new Vector3(this.transform.localScale.x * 3,0,this.transform.localScale.x  * 3));
-		dockRot[0] = new Vector3(0,0,0);
-		dockRot[1] = new Vector3(0,180,0);
-		dockRot[2] = new Vector3(0,90,0);
-		dockRot[3] = new Vector3(0,-90,0);
-		dockRot[4] = new Vector3(0,-45,0);
-		farmGrid[0] = new Vector3(-10,0,-4);
-		farmGrid[1] = new Vector3(-10,0,-2);
-		farmGrid[2] = new Vector3(-10,0,0);
-		farmGrid[3] = new Vector3(-10,0,2);
-		farmGrid[4] = new Vector3(-10,0,4);
-		townGrid[0] = new Vector3(-12,0,-4);
-		townGrid[1] = new Vector3(-12,0,-2);
-		townGrid[2] = new Vector3(-12,0,0);
-		townGrid[3] = new Vector3(-12,0,2);
-		townGrid[4] = new Vector3(-12,0,4);
 	}
 	
 	// Update is called once per frame
@@ -127,8 +94,9 @@ public class Island : MonoBehaviour {
 		}
 		
 		// spawn longboats
-		
 	}
+	
+	
 	
 	public bool selectIsland()
 	{
@@ -170,10 +138,8 @@ public class Island : MonoBehaviour {
 	public void addTown() {
 		
 		if(sumThings()+1<=maxThings) {
+			
 			townNum++;
-			GameObject tempObject = (GameObject)Instantiate(town,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(townGrid[townNum - 1]);
-			towns.Add(tempObject);
 				
 		}
 		
@@ -182,10 +148,9 @@ public class Island : MonoBehaviour {
 	public void addFarm() {
 		
 		if(sumThings()+1<=maxThings) {
+			
 			farmNum++;
-			GameObject tempObject = (GameObject)Instantiate(sheepFarm,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(farmGrid[(farmNum - 1)]);
-			sheepFarms.Add(tempObject);
+				
 		}		
 	}
 	
@@ -194,19 +159,15 @@ public class Island : MonoBehaviour {
 		if(sumThings()+1<=maxThings) {
 			
 			dockNum++;
-			GameObject tempObject = (GameObject)Instantiate(dock,this.collider.bounds.center,new Quaternion(0, 0, 0, 0));
-			tempObject.transform.Translate(dockPos[dockNum - 1]);
-			tempObject.transform.Rotate(dockRot[dockNum - 1]);
-			docks.Add(tempObject);
+				
 		}
 		
 	}
 	
 	public void removeTown() {
 		
-		if(sumThings()-1>=0) {
-			DestroyObject(towns.ToArray()[townNum - 1]);
-			towns.RemoveAt(townNum - 1);
+		if(townNum-1>=0) {
+			
 			townNum--;
 				
 		}
@@ -215,9 +176,8 @@ public class Island : MonoBehaviour {
 	
 	public void removeFarm() {
 		
-		if(sumThings()-1>=0) {
-			DestroyObject(sheepFarms.ToArray()[farmNum - 1]);
-			sheepFarms.RemoveAt(farmNum - 1);
+		if(farmNum-1>=0) {
+			
 			farmNum--;
 				
 		}
@@ -226,10 +186,7 @@ public class Island : MonoBehaviour {
 	
 	public void removeDock() {
 		
-		if(sumThings()-1>=0) {
-			
-			DestroyObject(docks.ToArray()[dockNum - 1]);
-			docks.RemoveAt(dockNum - 1);
+		if(dockNum-1>=0) {
 			
 			dockNum--;
 				
@@ -270,4 +227,5 @@ public class Island : MonoBehaviour {
 		}
 		
 	}
+	
 }
